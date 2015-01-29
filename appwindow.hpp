@@ -1,0 +1,4 @@
+#ifndef APPWINDOW_HPP
+#define APPWINDOW_HPP
+
+#endif // APPWINDOW_HPP
