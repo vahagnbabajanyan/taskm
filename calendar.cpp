@@ -111,6 +111,7 @@
      calendar->setVerticalHeaderFormat(QCalendarWidget::VerticalHeaderFormat(
          verticalHeaderCombo->itemData(index).toInt()));
  }*/
+ /*
 
  void Calendar::selectedDateChanged()
  {

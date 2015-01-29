@@ -86,10 +86,11 @@ class myTimers : public QWidget
 {
     typedef QString DateName;
 public:
-    myTimers(QWidget* parent = 0);
+    myTimers(const std::list<task>& tasks,
+             QWidget* parent = 0);
 
 public:
-    void setTimer(const task& t);
+    void setTimer(const std::list<task>& tasks);
     ~myTimers();
 
 private:

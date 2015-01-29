@@ -8,7 +8,7 @@ struct templates
 
 struct design_patterns
 {
-    const std::string _value = "design_patterns";
+    const std::string _value = "design patterns";
 };
 
 struct satter_generic
@@ -49,6 +49,9 @@ struct tests
 template <typename T>
 struct taskName
 {
+    taskName()
+        : name(typename T())
+    {}
     const T name;
 };
 

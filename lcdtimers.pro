@@ -16,13 +16,13 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     timers.cpp \
     appwindow.cpp \
-    calendar.cpp \
+    #calendar.cpp \
     sql_engine.cpp
 
 HEADERS  += mainwindow.h \
     timers.hpp \
     appwindow.hpp \
-    calendar.hpp \
+    #calendar.hpp \
     json.hpp \
     sql_engine.hpp \
     utilities.hpp \
