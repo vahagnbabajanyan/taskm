@@ -40,7 +40,8 @@ public:
     QStringList getAllForDate(const QString& date, const QString& tblName);
     QStringList getTaskForDateAndTime(const QString& time, const QString& date, const QString& tblName);
     QStringList getTaskForDateByName(const QString& taskName, const QString& date, const QString& tblName);
-    bool insertTaskForDate(const QString& date, const QString& startTime, const QString& taskName,
+    bool insertTaskForDate(const QString& date, const QString& startTime,
+                           const QString& endTime, const QString& taskName,
                            const QString& duration, const QString& status,
                            const QString& tblName);
     QString getLastDate();

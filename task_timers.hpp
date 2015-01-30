@@ -43,7 +43,7 @@ struct work
 
 struct tests
 {
-    const std::string _value = "tests";
+    const std::string _value = "test knowledge";
 };
 
 template <typename T>

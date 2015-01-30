@@ -76,6 +76,7 @@ bool sqlconnector::create_table(const QString& tblName)
             "date DATE NOT NULL,"
             "task  VARCHAR(20),"
             "startTime TIME,"
+            "endTime TIME,"
             "duration INT,"
             "status VARCHAR(20)"
             ");";
@@ -130,17 +131,19 @@ QStringList sqlconnector::getTaskForDateByName(const QString& tblName, const QSt
     result.push_back(query.value(2).toString());
     result.push_back(query.value(3).toString());
     result.push_back(query.value(4).toString());
+    result.push_back(query.value(5).toString());
     return result;
 }
 
-bool sqlconnector::insertTaskForDate(const QString& date, const QString& startTime, const QString& taskName,
-                                     const QString& duration, const QString& status,
+bool sqlconnector::insertTaskForDate(const QString& date, const QString& startTime, const QString& endTime,
+                                     const QString& taskName, const QString& duration, const QString& status,
                                      const QString& tblName)
 {
-    QString qinsert = "insert into " + tblName + " (date, task, starttime, duration, status) VALUES(\"" +
+    QString qinsert = "insert into " + tblName + " (date, task, starttime, endTime, duration, status) VALUES(\"" +
             date + "\", \"" +
             taskName  + "\", \"" +
             startTime + "\", \"" +
+            endTime + "\", \"" +
             duration + "\", \"" +
             status + "\");";
     QSqlQuery query(_database);

@@ -16,6 +16,8 @@
 
 #include "sql_engine.hpp"
 
+
+
 enum Status
 {
     notStarted,
@@ -46,11 +48,13 @@ struct task
     : _taskDate(t[0])
     , _taskName(t[1])
     , _taskTime(t[2])
-    , _duration(t[3].toInt())
-    , _status(stringToStatus(t[4]))
+    , _endTime(t[3])
+    , _duration(t[4].toInt())
+    , _status(stringToStatus(t[5]))
     {}
     QString _taskDate;
     QString _taskTime;
+    QString _endTime;
     QString _taskName;
     int _duration;
     Status _status;
@@ -61,9 +65,11 @@ struct taskGui
     taskGui()
         :_taskName(new QLabel)
         , _startTime(new QLabel)
+        , _endTime(new QTime)
         ,_start(new QPushButton("start"))
         , _stop(new QPushButton("stop"))
         , _timer(0)
+
     {}
 
     ~taskGui()
@@ -73,17 +79,22 @@ struct taskGui
         delete _start;
         delete _stop;
         delete _timer;
+
     }
 
-    QLabel* _taskName;
-    QLabel* _startTime;
-    QPushButton* _start;
-    QPushButton* _stop;
-    QLCDNumber* _timer;
+    QLabel *_taskName;
+    QLabel *_startTime;
+    QTime *_endTime;
+    QPushButton *_start;
+    QPushButton *_stop;
+    QLCDNumber *_timer;
 };
+
 
 class myTimers : public QWidget
 {
+    Q_OBJECT
+
     typedef QString DateName;
 public:
     myTimers(const std::list<task>& tasks,
@@ -93,10 +104,38 @@ public:
     void setTimer(const std::list<task>& tasks);
     ~myTimers();
 
+private slots:
+    void updateTimers()
+    {
+        QTime current = QTime::currentTime();
+        setActive(current);
+    }
+
+    void startCurrentTimer()
+    {
+        _currentTimer->start();
+    }
+
+    void stopCurrentTimer()
+    {
+        _currentTimer->stop();
+    }
+
+private:
+    void setActive(const QTime& current);
+
 private:
     QWidget* _mainWidget;
     QWidget* _visibleWidget;
     std::list<taskGui*> _tasks;
+
+    taskGui* _activeTask;
+    taskGui* _idleTask;
+
+    QTimer* _currentTimer;
+    QTime* _currentTimerDuration;
+    QTimer* _idleTimer;
+    QTime* _idleTimerDuration;
 };
 
 #endif // TIMERS_HPP
