@@ -12,6 +12,9 @@ myTimers::myTimers(const std::list<task>& tasks,
     , _mainWidget(new QWidget)
     , _visibleWidget(0)
     , _currentTimer(new QTimer())
+    , _currentTimerDuration(new QTime())
+    , _activeTask(0)
+    , _is_active(false)
     , _idleTimer(new QTimer())
 {
     setTimer(tasks);
@@ -60,7 +63,7 @@ void myTimers::setTimer(const std::list<task>& tasks)
                                         "}"
                                         );
 
-        QObject::connect(_currentTimer, SIGNAL(timeout()), this, SLOT(updateTimers()));
+        QObject::connect(_currentTimer, SIGNAL(timeout()), this, SLOT(updateTimers()), Qt::UniqueConnection);
         QObject::connect(_taskGui->_start, SIGNAL(pressed()), this, SLOT(startCurrentTimer()));
         QObject::connect(_taskGui->_stop, SIGNAL(pressed()), this, SLOT(stopCurrentTimer()));
     }
@@ -72,16 +75,40 @@ void myTimers::setTimer(const std::list<task>& tasks)
 
 void myTimers::setActive(const QTime& current)
 {
+    if (_activeTask && current >= *(_activeTask->_endTime)) {
+        _is_active = false;
+        _activeTask = 0;
+    }
     foreach (taskGui* t, _tasks) {
         if (QTime::fromString(t->_startTime->text()) <= current &&
             current < *(t->_endTime) ) {
-
             _activeTask = t;
-            _currentTimerDuration->setHMS(0, t->_timer->intValue(), 0);
+            if (!_is_active) {
+                int minutes = t->_timer->intValue();
+                if (minutes >= 60) {
+                    _currentTimerDuration->setHMS(minutes / 60, minutes % 60, 0, 0);
+                } else {
+                    _currentTimerDuration->setHMS(0, minutes, 0, 0);
+                }
+            }
             _activeTask->_start->setEnabled(true);
             _activeTask->_stop->setEnabled(true);
+            _is_active = true;
             return;
         }
+    }
+}
+
+void myTimers::updateTimers()
+{
+    QTime current = QTime::currentTime();
+    setActive(current);
+    if (_is_active) {
+        _currentTimerDuration->setHMS(_currentTimerDuration->addMSecs(-1).hour(),
+                                      _currentTimerDuration->addMSecs(-1).minute(),
+                                      _currentTimerDuration->addMSecs(-1).second(),
+                                      _currentTimerDuration->addMSecs(-1).msec());
+        _activeTask->_timer->display(_currentTimerDuration->toString(QString("hh:mm:ss")));
     }
 }
 

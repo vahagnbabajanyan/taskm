@@ -46,6 +46,21 @@ struct tests
     const std::string _value = "test knowledge";
 };
 
+struct dictionary
+{
+    const std::string _value = "dictionary";
+};
+
+struct movie_half
+{
+    const std::string _value = "movie half";
+};
+
+struct reading
+{
+    const std::string _value = "reading";
+};
+
 template <typename T>
 struct taskName
 {

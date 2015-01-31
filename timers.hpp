@@ -105,15 +105,11 @@ public:
     ~myTimers();
 
 private slots:
-    void updateTimers()
-    {
-        QTime current = QTime::currentTime();
-        setActive(current);
-    }
+    void updateTimers();
 
     void startCurrentTimer()
     {
-        _currentTimer->start();
+        _currentTimer->start(1);
     }
 
     void stopCurrentTimer()
@@ -130,6 +126,7 @@ private:
     std::list<taskGui*> _tasks;
 
     taskGui* _activeTask;
+    bool _is_active;
     taskGui* _idleTask;
 
     QTimer* _currentTimer;
