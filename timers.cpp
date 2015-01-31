@@ -73,6 +73,7 @@ void myTimers::setTimer(const std::list<task>& tasks)
     setLayout(mainLayout);
 }
 
+
 void myTimers::setActive(const QTime& current)
 {
     if (_activeTask && current >= *(_activeTask->_endTime)) {

@@ -109,6 +109,7 @@ private slots:
 
     void startCurrentTimer()
     {
+        // calibration
         _currentTimer->start(1);
     }
 
