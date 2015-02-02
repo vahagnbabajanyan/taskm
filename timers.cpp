@@ -24,6 +24,7 @@ myTimers::myTimers(const std::list<task>& tasks,
     , _visibleWidget(0)
     , _currentTimer(new QTimer())
     , _currentTimerDuration(new QTime())
+    , _idleTimerDuration(new QTime())
     , _activeTask(0)
     , _is_active(false)
     , _run_timer(false)
@@ -40,7 +41,6 @@ myTimers::myTimers(const std::list<task>& tasks,
 void myTimers::setTimer(const std::list<task>& tasks)
 {
     QVBoxLayout* vlayout = new QVBoxLayout;
-    std::cout << __LINE__ << std::endl;
     foreach (const task& t, tasks) {
         taskGui*_taskGui = new taskGui;
         setCurrentTask(_taskGui, t);
@@ -61,7 +61,11 @@ void myTimers::setTimer(const std::list<task>& tasks)
     }
     _idle_lcd = new QLCDNumber;
     _idle_lcd->setDigitCount(8);
+    _idleTimerDuration->setHMS(0, 0, 0, 0);
     _idle_lcd->display(0);
+    _idle_lcd->setStyleSheet("QLCDNumber "
+                                    "{color: black; "
+                                    "background-color: red}");
     vlayout->addWidget(_idle_lcd);
     _mainWidget->setLayout(vlayout);
     QHBoxLayout* mainLayout = new QHBoxLayout;
@@ -114,7 +118,6 @@ void myTimers::setActive(const QTime& current)
 {
 
     if ((_activeTask && current >= *(_activeTask->_endTime))) {
-        std::cout << __LINE__ << std::endl;
         _activeTask->_start->setEnabled(false);
         updateButtonStyle(_activeTask->_start);
         _activeTask->_stop->setEnabled(false);
@@ -124,12 +127,13 @@ void myTimers::setActive(const QTime& current)
         _run_timer = false;
         _activeTask = 0;
     }
+
+
+
+
+
     foreach (taskGui* t, _tasks) {
-        if (QTime::fromString(t->_startTime->text()) <= current &&
-            (current < *(t->_endTime) || "00:00:00" == t->_endTime->toString().toStdString()) ) {
-            std::cout << current.toString().toStdString() << " L: " << t->_startTime->text().toStdString() << "   R:"
-                      << t->_endTime->toString().toStdString() << std::endl;
-            std::cout << __LINE__ << std::endl;
+        if (QTime::fromString(t->_startTime->text()) <= current && (current < *(t->_endTime) || "00:00:00" == t->_endTime->toString().toStdString()) ) {
             if (!_is_active && !_run_idle_timer) {
                 t->_start->setEnabled(true);
                 updateButtonStyle(t->_start);

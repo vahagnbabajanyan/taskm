@@ -25,13 +25,11 @@ public:
     {
         while (1) {
             _mseconds = GetIdleMS();
-            if (_mseconds >= 3000 && false == _is_idle) {
-                std::cout << "user idle" << std::endl;
+            if (_mseconds >= 300000 && false == _is_idle) {
                 _is_idle = true;
                 emit userIdle();
             }
-            if (_mseconds < 3000 && _is_idle) {
-                std::cout << "user active" << std::endl;
+            if (_mseconds < 300000 && _is_idle) {
                 _is_idle = false;
             }
         }
