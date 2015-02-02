@@ -9,8 +9,10 @@ QT       += core gui sql
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = lcdtimers
+debug: TARGET = lcdtimersD
 TEMPLATE = app
 
+LIBS += -luser32
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -26,6 +28,7 @@ HEADERS  += mainwindow.h \
     json.hpp \
     sql_engine.hpp \
     utilities.hpp \
-    task_timers.hpp
+    task_timers.hpp \
+    idletimetracker.hpp
 
 FORMS    += mainwindow.ui

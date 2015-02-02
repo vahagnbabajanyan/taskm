@@ -78,7 +78,8 @@ bool sqlconnector::create_table(const QString& tblName)
             "startTime TIME,"
             "endTime TIME,"
             "duration INT,"
-            "status VARCHAR(20)"
+            "status VARCHAR(20),"
+            "percent DOUBLE"
             ");";
     QSqlQuery query(_database);
     if (!query.exec(create_table)) {
@@ -132,6 +133,7 @@ QStringList sqlconnector::getTaskForDateByName(const QString& tblName, const QSt
     result.push_back(query.value(3).toString());
     result.push_back(query.value(4).toString());
     result.push_back(query.value(5).toString());
+    result.push_back(query.value(6).toString());
     return result;
 }
 

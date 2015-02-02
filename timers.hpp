@@ -51,13 +51,17 @@ struct task
     , _endTime(t[3])
     , _duration(t[4].toInt())
     , _status(stringToStatus(t[5]))
+    , _percent(t[6].toDouble())
     {}
+
+public:
     QString _taskDate;
     QString _taskTime;
     QString _endTime;
     QString _taskName;
     int _duration;
     Status _status;
+    double _percent;
 };
 
 struct taskGui
@@ -69,6 +73,7 @@ struct taskGui
         ,_start(new QPushButton("start"))
         , _stop(new QPushButton("stop"))
         , _timer(0)
+        , _percent(new QLabel)
 
     {}
 
@@ -78,7 +83,10 @@ struct taskGui
         delete _startTime;
         delete _start;
         delete _stop;
-        delete _timer;
+        if (0 != _timer) {
+            delete _timer;
+        }
+        delete _percent;
 
     }
 
@@ -88,6 +96,7 @@ struct taskGui
     QPushButton *_start;
     QPushButton *_stop;
     QLCDNumber *_timer;
+    QLabel *_percent;
 };
 
 
@@ -99,27 +108,44 @@ class myTimers : public QWidget
 public:
     myTimers(const std::list<task>& tasks,
              QWidget* parent = 0);
-
-public:
     void setTimer(const std::list<task>& tasks);
     ~myTimers();
 
 private slots:
     void updateTimers();
 
-    void startCurrentTimer()
+    void startTimer()
     {
         // calibration
         _currentTimer->start(1);
     }
 
+public slots:
+    void startCurrentTimer()
+    {
+        // calibration
+        _run_timer = true;
+        _run_idle_timer = false;
+    }
+
     void stopCurrentTimer()
     {
-        _currentTimer->stop();
+        _run_timer = false;
+        _run_idle_timer = true;
+    }
+
+    void startIdleTimer()
+    {
+        std::cout << "IDLE TIMER STARTED" <<  std::endl;
+        _run_idle_timer = true;
+        _run_timer = false;
     }
 
 private:
     void setActive(const QTime& current);
+    void setButtonsStyleshits(QPushButton* button);
+    void setCurrentTask(taskGui* taskGui, const task& t);
+    void createTaskLayout(QHBoxLayout* layout, taskGui* taskg);
 
 private:
     QWidget* _mainWidget;
@@ -128,7 +154,10 @@ private:
 
     taskGui* _activeTask;
     bool _is_active;
+    bool _run_timer;
     taskGui* _idleTask;
+    bool _run_idle_timer;
+    QLCDNumber* _idle_lcd;
 
     QTimer* _currentTimer;
     QTime* _currentTimerDuration;
