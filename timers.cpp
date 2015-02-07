@@ -84,6 +84,8 @@ void myTimers::setCurrentTask(taskGui* taskg, const task& t)
     taskg->_percent->setText("0.0");
     taskg->_start->setEnabled(false);
     taskg->_stop->setEnabled(false);
+    taskg->_duration = t._duration;
+    std::cout << "setting duration : " << taskg->_duration << std::endl;
 }
 
 void myTimers::createTaskLayout(QHBoxLayout* layout, taskGui* taskg)
@@ -125,28 +127,41 @@ void myTimers::setActive(const QTime& current)
         // collectResults()
         _is_active = false;
         _run_timer = false;
+        sqlconnector sqlc("QMYSQL", "localhost", "", "vahagn", "gorilaz");
+        sqlc.selectDatabase("testApp1");
+        QString upDur = QString::number(_currentTimerDuration->minute());
+        double prc = (double(_currentTimerDuration->minute()) / double(_activeTask->_duration)) * 100;
+        if (!sqlc.updateTaskStatusForDate("2015-02-05", _activeTask->_taskName->text(),
+                                     QString::number(_currentTimerDuration->minute()),
+                                     QString::number(prc),
+                                     "testTbl_16")) {
+            std::cout << "CANNOT UPDATE TABLE" << std::endl;
+        }
         _activeTask = 0;
     }
 
 
-
-
-
     foreach (taskGui* t, _tasks) {
         if (QTime::fromString(t->_startTime->text()) <= current && (current < *(t->_endTime) || "00:00:00" == t->_endTime->toString().toStdString()) ) {
-            if (!_is_active && !_run_idle_timer) {
+            if (!_is_active /*&& !_run_idle_timer*/) {
+
+                // set Buttons Enabled
                 t->_start->setEnabled(true);
                 updateButtonStyle(t->_start);
                 t->_stop->setEnabled(true);
                 updateButtonStyle(t->_stop);
 
                 _is_active = true;
+
+                // set Timer Duration
                 int minutes = t->_timer->intValue();
                 if (minutes >= 60) {
                     _currentTimerDuration->setHMS(minutes / 60, minutes % 60, 0, 0);
                 } else {
                     _currentTimerDuration->setHMS(0, minutes, 0, 0);
                 }
+
+                // set active task
                 _activeTask = t;
             }
             return;

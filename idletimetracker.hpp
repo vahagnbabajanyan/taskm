@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include <QObject>
+#include <QThread>
 
 BOOL WINAPI GetLastInputInfo(
     _Out_  PLASTINPUTINFO plii
@@ -21,9 +22,11 @@ public:
         , _is_idle(false)
     {}
 
+public slots:
     void track()
     {
         while (1) {
+            QThread::currentThread()->wait(1);
             _mseconds = GetIdleMS();
             if (_mseconds >= 300000 && false == _is_idle) {
                 _is_idle = true;
@@ -32,6 +35,7 @@ public:
             if (_mseconds < 300000 && _is_idle) {
                 _is_idle = false;
             }
+
         }
     }
 

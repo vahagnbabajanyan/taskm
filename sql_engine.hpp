@@ -26,13 +26,14 @@ used = "use testDB2;";
 st = "show tables;";
 */
 
-class sqlconnector
+class sqlconnector : public QObject
 {
 public:
     sqlconnector(const QString& driver, const QString& hostname,
                  const QString& dbname, const QString& username,
                  const QString& userpas);
 
+public slots:
     bool create_database(const QString& dbName);
     bool create_table(const QString& tblName);
     bool selectDatabase(const QString& dbName);
@@ -44,6 +45,9 @@ public:
                            const QString& endTime, const QString& taskName,
                            const QString& duration, const QString& status,
                            const QString& tblName);
+    bool updateTaskStatusForDate(const QString& date, const QString& taskName,
+                                 const QString& duration, const QString& percent,
+                                 const QString &tblName);
     QString getLastDate();
 
 private:

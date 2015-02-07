@@ -74,6 +74,7 @@ struct taskGui
         , _stop(new QPushButton("stop"))
         , _timer(0)
         , _percent(new QLabel)
+        , _duration(0)
 
     {}
 
@@ -97,6 +98,7 @@ struct taskGui
     QPushButton *_stop;
     QLCDNumber *_timer;
     QLabel *_percent;
+    int _duration;
 };
 
 

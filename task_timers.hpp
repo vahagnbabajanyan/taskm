@@ -63,6 +63,11 @@ struct reading
     const std::string _value = "reading";
 };
 
+struct lunch
+{
+    const std::string _value = "lunch";
+};
+
 template <typename T>
 struct taskName
 {

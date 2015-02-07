@@ -17,6 +17,7 @@ std::list<std::string> getTasks()
     result.push_back(taskName<templates>().name._value);
     result.push_back(taskName<design_patterns>().name._value);
     result.push_back(taskName<alexandrescu>().name._value);
+    result.push_back(taskName<lunch>().name._value);
     result.push_back(taskName<threads>().name._value);
     result.push_back(taskName<work>().name._value);
     result.push_back(taskName<stroustrup>().name._value);
@@ -28,6 +29,25 @@ std::list<std::string> getTasks()
     return result;
 }
 
+/*std::list<std::string> getTasks()
+{
+    std::list<std::string> result;
+    result.push_back(taskName<work>().name._value);
+    result.push_back(taskName<lunch>().name._value);
+    result.push_back("work1");
+    result.push_back(taskName<templates>().name._value);
+    result.push_back(taskName<design_patterns>().name._value);
+    result.push_back(taskName<alexandrescu>().name._value);
+    result.push_back(taskName<threads>().name._value);
+    result.push_back(taskName<stroustrup>().name._value);
+    result.push_back(taskName<satter_generic>().name._value);
+    result.push_back(taskName<dictionary>().name._value);
+    result.push_back(taskName<tests>().name._value);
+    result.push_back(taskName<movie_half>().name._value);
+    result.push_back(taskName<reading>().name._value);
+    return result;
+}*/
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -36,22 +56,59 @@ int main(int argc, char *argv[])
     sqlc.create_database("testApp1");
     sqlc.selectDatabase("testApp1");
 
-    /*sqlc.create_table("testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "08:30", "09:30", "cormen", "60", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "09:30", "10:30", "templates", "60", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "10:30", "11:30", "design patterns", "60", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "11:30", "12:30", "alexandrescu", "60", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "13:00", "14:00", "threads", "60", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "14:00", "18:00", "work", "240", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "21:00", "22:00", "stroustrup", "60", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "22:00", "23:00", "satter", "60", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "23:00", "00:00", "dictionary", "60", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "00:00", "00:40", "test knowledge", "40", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "00:40", "01:00", "movie half", "20", "notStarted", "testTbl11");
-    sqlc.insertTaskForDate("2015-02-01", "01:00", "01:30", "reading", "30", "notStarted", "testTbl11");
 
 
+    /*sqlc.create_table("testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:30", "09:32", "lunch", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:32", "09:34", "work", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:34", "09:36", "work1", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:36", "09:38", "templates", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:38", "09:40", "design patterns", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:40", "09:42", "threads", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:42", "09:44", "alexandrescu", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:44", "09:46", "stroustrup", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:46", "09:48", "satter", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:48", "09:49", "dictionary", "1", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:49", "09:50", "test knowledge", "1", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:50", "09:52", "movie half", "2", "notStarted", "testTbl_14");
+        sqlc.insertTaskForDate("2015-02-05", "09:50", "09:54", "reading", "2", "notStarted", "testTbl_14");*/
 
+
+    //sqlc.insertTaskForDate("2015-02-04", "13:00", "14:00", "work1", "60", "notStarted", "testTbl_13");
+/*
+    sqlc.create_table("testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "12:30", "13:00", "lunch", "30", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "11:15", "12:30", "work", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "13:00", "14:00", "work1", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "14:00", "15:00", "templates", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "15:00", "15:00", "design patterns", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "17:00", "18:00", "threads", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "16:00", "17:00", "alexandrescu", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "21:00", "22:00", "stroustrup", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "22:00", "23:00", "satter", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "23:00", "00:00", "dictionary", "60", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "00:00", "00:40", "test knowledge", "40", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "00:40", "01:00", "movie half", "20", "notStarted", "testTbl_13");
+    sqlc.insertTaskForDate("2015-02-04", "01:00", "01:30", "reading", "30", "notStarted", "testTbl_13");
+    */
+
+    //sqlc.insertTaskForDate("2015-02-05", "12:30", "13:00", "lunch", "30", "notStarted", "testTbl_16");
+    /*sqlc.create_table("testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "08:30", "09:30", "cormen", "60", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "09:30", "10:30", "templates", "60", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "10:30", "11:30", "design patterns", "60", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "11:30", "12:30", "alexandrescu", "60", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "12:30", "13:00", "lunch", "30", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "13:00", "14:00", "threads", "60", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "14:00", "18:00", "work", "240", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "21:00", "22:00", "stroustrup", "60", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "22:00", "23:00", "satter", "60", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "23:00", "00:00", "dictionary", "60", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "00:00", "00:40", "test knowledge", "40", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "00:40", "01:00", "movie half", "20", "notStarted", "testTbl_16");
+    sqlc.insertTaskForDate("2015-02-05", "01:00", "01:30", "reading", "30", "notStarted", "testTbl_16");*/
+
+/*
     sqlc.create_table("testTbl9");
     sqlc.insertTaskForDate("2015-01-29", "17:32", "17:34", "cormen", "2", "notStarted", "testTbl9");
     sqlc.insertTaskForDate("2015-01-29", "17:34", "17:36", "templates", "2", "notStarted", "testTbl9");
@@ -85,7 +142,7 @@ int main(int argc, char *argv[])
     std::list<task> tasks;
     std::list<std::string> taskNames(getTasks());
     foreach( const std::string& taskName, taskNames) {
-        QStringList tlist = sqlc.getTaskForDateByName("testTbl11", "2015-02-01", taskName.c_str());
+        QStringList tlist = sqlc.getTaskForDateByName("testTbl_16", "2015-02-05", taskName.c_str());
         tasks.push_back(task(tlist));
     }
 
@@ -101,8 +158,10 @@ int main(int argc, char *argv[])
     itracker.moveToThread(trackThread);
     trackThread->start();
 
-
+    timer.activateWindow();
+    timer.setWindowFlags(Qt::WindowStaysOnTopHint);
     timer.show();
+
 
     return a.exec();
 }
