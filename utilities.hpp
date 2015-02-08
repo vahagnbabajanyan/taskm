@@ -1,14 +1,13 @@
 #ifndef UTILITIES_HPP
 #define UTILITIES_HPP
 
+#include <QDate>
+#include <QString>
+
 class utilities
 {
 public:
-    static QString changeDateFormat(const QString& date)
-    {
-        QStringList dl = date.split("\\");
-        return dl[2] + "-" + dl[1] + "-" + dl[0];
-    }
+    static QString getCurrentDate();
 };
 
 #endif // UTILITIES_HPP

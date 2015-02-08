@@ -18,17 +18,19 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     timers.cpp \
     appwindow.cpp \
-    #calendar.cpp \
-    sql_engine.cpp
+    calendar.cpp \
+    sql_engine.cpp \
+    utilities.cpp
 
 HEADERS  += mainwindow.h \
     timers.hpp \
     appwindow.hpp \
-    #calendar.hpp \
+    calendar.hpp \
     json.hpp \
     sql_engine.hpp \
     utilities.hpp \
     task_timers.hpp \
-    idletimetracker.hpp
+    idletimetracker.hpp \
+    plan.hpp
 
 FORMS    += mainwindow.ui

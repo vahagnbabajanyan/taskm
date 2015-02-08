@@ -15,6 +15,7 @@
 #include <queue>
 
 #include "sql_engine.hpp"
+#include "plan.hpp"
 
 
 
@@ -110,7 +111,7 @@ class myTimers : public QWidget
 public:
     myTimers(const std::list<task>& tasks,
              QWidget* parent = 0);
-    void setTimer(const std::list<task>& tasks);
+    void setTimer(const std::list<task>& tasks, QHBoxLayout *mainLayout);
     ~myTimers();
 
 private slots:
@@ -165,6 +166,9 @@ private:
     QTime* _currentTimerDuration;
     QTimer* _idleTimer;
     QTime* _idleTimerDuration;
+
+    QPushButton* _calendar;
+    dayPlan* _plan;
 };
 
 #endif // TIMERS_HPP

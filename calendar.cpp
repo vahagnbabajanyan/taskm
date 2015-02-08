@@ -1,3 +1,4 @@
+
 /****************************************************************************
  **
  ** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
@@ -52,9 +53,12 @@
 #include <QVariant>
 #include <QDate>
 
+#include <iostream>
+
  #include "calendar.hpp"
 
  Calendar::Calendar()
+     : _planner(new dayPlan)
  {
      createPreviewGroupBox();
      createGeneralOptionsGroupBox();
@@ -111,7 +115,6 @@
      calendar->setVerticalHeaderFormat(QCalendarWidget::VerticalHeaderFormat(
          verticalHeaderCombo->itemData(index).toInt()));
  }*/
- /*
 
  void Calendar::selectedDateChanged()
  {
@@ -209,120 +212,11 @@
 
  void Calendar::createGeneralOptionsGroupBox()
  {
+
      generalOptionsGroupBox = new QGroupBox(tr("General Options"));
-     _timers = new myTimers;
-
-     /*localeCombo = new QComboBox;
-     int curLocaleIndex = -1;
-     int index = 0;
-     for (int _lang = QLocale::C; _lang <= QLocale::LastLanguage; ++_lang) {
-         QLocale::Language lang = static_cast<QLocale::Language>(_lang);
-         QList<QLocale::Country> countries = QLocale::countriesForLanguage(lang);
-         for (int i = 0; i < countries.count(); ++i) {
-             QLocale::Country country = countries.at(i);
-             QString label = QLocale::languageToString(lang);
-             label += QLatin1Char('/');
-             label += QLocale::countryToString(country);
-             QLocale locale(lang, country);
-             if (this->locale().language() == lang && this->locale().country() == country)
-                 curLocaleIndex = index;
-             localeCombo->addItem(label, locale);
-             ++index;
-         }
-     }
-     if (curLocaleIndex != -1)
-         localeCombo->setCurrentIndex(curLocaleIndex);
-     localeLabel = new QLabel(tr("&Locale"));
-     localeLabel->setBuddy(localeCombo);
-
-     firstDayCombo = new QComboBox;
-     firstDayCombo->addItem(tr("Sunday"), Qt::Sunday);
-     firstDayCombo->addItem(tr("Monday"), Qt::Monday);
-     firstDayCombo->addItem(tr("Tuesday"), Qt::Tuesday);
-     firstDayCombo->addItem(tr("Wednesday"), Qt::Wednesday);
-     firstDayCombo->addItem(tr("Thursday"), Qt::Thursday);
-     firstDayCombo->addItem(tr("Friday"), Qt::Friday);
-     firstDayCombo->addItem(tr("Saturday"), Qt::Saturday);
-
-     firstDayLabel = new QLabel(tr("Wee&k starts on:"));
-     firstDayLabel->setBuddy(firstDayCombo);
-
-     selectionModeCombo = new QComboBox;
-     selectionModeCombo->addItem(tr("Single selection"),
-                                 QCalendarWidget::SingleSelection);
-     selectionModeCombo->addItem(tr("None"), QCalendarWidget::NoSelection);
-
-     selectionModeLabel = new QLabel(tr("&Selection mode:"));
-     selectionModeLabel->setBuddy(selectionModeCombo);
-
-     gridCheckBox = new QCheckBox(tr("&Grid"));
-     gridCheckBox->setChecked(calendar->isGridVisible());
-
-     navigationCheckBox = new QCheckBox(tr("&Navigation bar"));
-     navigationCheckBox->setChecked(true);
-
-     horizontalHeaderCombo = new QComboBox;
-     horizontalHeaderCombo->addItem(tr("Single letter day names"),
-                                    QCalendarWidget::SingleLetterDayNames);
-     horizontalHeaderCombo->addItem(tr("Short day names"),
-                                    QCalendarWidget::ShortDayNames);
-     horizontalHeaderCombo->addItem(tr("None"),
-                                    QCalendarWidget::NoHorizontalHeader);
-     horizontalHeaderCombo->setCurrentIndex(1);
-
-     horizontalHeaderLabel = new QLabel(tr("&Horizontal header:"));
-     horizontalHeaderLabel->setBuddy(horizontalHeaderCombo);
-
-     verticalHeaderCombo = new QComboBox;
-     verticalHeaderCombo->addItem(tr("ISO week numbers"),
-                                  QCalendarWidget::ISOWeekNumbers);
-     verticalHeaderCombo->addItem(tr("None"), QCalendarWidget::NoVerticalHeader);
-
-     verticalHeaderLabel = new QLabel(tr("&Vertical header:"));
-     verticalHeaderLabel->setBuddy(verticalHeaderCombo);
-
-     connect(localeCombo, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(localeChanged(int)));
-     connect(firstDayCombo, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(firstDayChanged(int)));
-     connect(selectionModeCombo, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(selectionModeChanged(int)));
-     connect(gridCheckBox, SIGNAL(toggled(bool)),
-             calendar, SLOT(setGridVisible(bool)));
-     connect(navigationCheckBox, SIGNAL(toggled(bool)),
-             calendar, SLOT(setNavigationBarVisible(bool)));
-     connect(horizontalHeaderCombo, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(horizontalHeaderChanged(int)));
-     connect(verticalHeaderCombo, SIGNAL(currentIndexChanged(int)),
-             this, SLOT(verticalHeaderChanged(int)));
-
-     QHBoxLayout *checkBoxLayout = new QHBoxLayout;
-     checkBoxLayout->addWidget(gridCheckBox);
-     checkBoxLayout->addStretch();
-     checkBoxLayout->addWidget(navigationCheckBox);
-     */
-
-     QVBoxLayout *outerLayout = new QVBoxLayout;
-     outerLayout->addWidget(_timers);
-     /*
-     outerLayout->addWidget(localeLabel, 0, 0);
-     outerLayout->addWidget(localeCombo, 0, 1);
-     outerLayout->addWidget(firstDayLabel, 1, 0);
-     outerLayout->addWidget(firstDayCombo, 1, 1);
-     outerLayout->addWidget(selectionModeLabel, 2, 0);
-     outerLayout->addWidget(selectionModeCombo, 2, 1);
-     outerLayout->addLayout(checkBoxLayout, 3, 0, 1, 2);
-     outerLayout->addWidget(horizontalHeaderLabel, 4, 0);
-     outerLayout->addWidget(horizontalHeaderCombo, 4, 1);
-     outerLayout->addWidget(verticalHeaderLabel, 5, 0);
-     outerLayout->addWidget(verticalHeaderCombo, 5, 1);
-     */
-     generalOptionsGroupBox->setLayout(outerLayout);
-
-     //firstDayChanged(firstDayCombo->currentIndex());
-     //selectionModeChanged(selectionModeCombo->currentIndex());
-     //horizontalHeaderChanged(horizontalHeaderCombo->currentIndex());
-     //verticalHeaderChanged(verticalHeaderCombo->currentIndex());
+     QHBoxLayout* layout = new QHBoxLayout;
+     layout->addWidget(_planner);
+     generalOptionsGroupBox->setLayout(layout);
  }
 
  void Calendar::createDatesGroupBox()

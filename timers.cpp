@@ -6,6 +6,7 @@
 #include <QStyle>
 
 #include "timers.hpp"
+#include "utilities.hpp"
 
 namespace {
     void updateButtonStyle(QPushButton*& b)
@@ -31,14 +32,22 @@ myTimers::myTimers(const std::list<task>& tasks,
     , _run_idle_timer(false)
     , _idleTimer(new QTimer())
     , _idle_lcd(0)
+    , _calendar(new QPushButton("Calendar"))
+    , _plan(new dayPlan)
 {
-    setTimer(tasks);
+    QHBoxLayout* mainLayout = new QHBoxLayout;
+    setTimer(tasks, mainLayout);
+    mainLayout->addWidget(_calendar);
+    _calendar->setCheckable(true);
+    connect(_calendar, SIGNAL(toggled(bool)), _plan, SLOT(setVisible(bool)));
     setActive(QTime::currentTime());
-
-
+    QHBoxLayout* globalLayout = new QHBoxLayout;
+    globalLayout->addLayout(mainLayout);
+    _plan->hide();
+    setLayout(globalLayout);
 }
 
-void myTimers::setTimer(const std::list<task>& tasks)
+void myTimers::setTimer(const std::list<task>& tasks, QHBoxLayout* mainLayout)
 {
     QVBoxLayout* vlayout = new QVBoxLayout;
     foreach (const task& t, tasks) {
@@ -68,9 +77,8 @@ void myTimers::setTimer(const std::list<task>& tasks)
                                     "background-color: red}");
     vlayout->addWidget(_idle_lcd);
     _mainWidget->setLayout(vlayout);
-    QHBoxLayout* mainLayout = new QHBoxLayout;
     mainLayout->addWidget(_mainWidget);
-    setLayout(mainLayout);
+
 }
 
 void myTimers::setCurrentTask(taskGui* taskg, const task& t)
@@ -127,16 +135,23 @@ void myTimers::setActive(const QTime& current)
         // collectResults()
         _is_active = false;
         _run_timer = false;
-        sqlconnector sqlc("QMYSQL", "localhost", "", "vahagn", "gorilaz");
-        sqlc.selectDatabase("testApp1");
+        QString whost = "sql3.freesqldatabase.com";
+        QString dbase = "sql366888";
+        QString wuser = "sql366888";
+        QString wpass = "yF5*gA8*";
+        QString port = "3306";
+        //sqlconnector sqlc("QMYSQL", "localhost", "", "vahagn", "gorilaz");
+        sqlconnector sqlc("QMYSQL", whost, dbase, wuser, wpass, port);
+        sqlc.selectDatabase("sql366888");
         QString upDur = QString::number(_currentTimerDuration->minute());
         double prc = (double(_currentTimerDuration->minute()) / double(_activeTask->_duration)) * 100;
-        if (!sqlc.updateTaskStatusForDate("2015-02-05", _activeTask->_taskName->text(),
+        if (!sqlc.updateTaskStatusForDate(utilities::getCurrentDate(), _activeTask->_taskName->text(),
                                      QString::number(_currentTimerDuration->minute()),
                                      QString::number(prc),
-                                     "testTbl_16")) {
+                                     "planVersion1")) {
             std::cout << "CANNOT UPDATE TABLE" << std::endl;
         }
+        sqlc.closeDb();
         _activeTask = 0;
     }
 

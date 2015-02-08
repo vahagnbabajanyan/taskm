@@ -29,7 +29,7 @@ namespace {
 
 sqlconnector::sqlconnector(const QString& driver, const QString& hostname,
              const QString& dbname, const QString& username,
-             const QString& userpass)
+             const QString& userpass, const QString& port)
                 : _database(QSqlDatabase::addDatabase(driver))
 {
     if (!dbname.isEmpty()) {
@@ -43,6 +43,9 @@ sqlconnector::sqlconnector(const QString& driver, const QString& hostname,
     }
     if (!userpass.isEmpty()) {
         _database.setPassword(userpass);
+    }
+    if (!port.isEmpty()) {
+        _database.setPort(port.toInt());
     }
     if (!_database.open()) {
         qDebug() << _database.lastError().text();

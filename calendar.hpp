@@ -44,7 +44,7 @@
 #define CALENDAR_HPP
 
 #include <QWidget>
-#include "timers.hpp"
+#include "plan.hpp"
 
 class QCalendarWidget;
 class QCheckBox;
@@ -104,7 +104,10 @@ private:
 
     QCheckBox *firstFridayCheckBox;
     QCheckBox *mayFirstCheckBox;
-    myTimers *_timers;
+
+    dayPlan* _planner;
 };
 
 #endif // CALENDAR_HPP
+
+

@@ -31,7 +31,11 @@ class sqlconnector : public QObject
 public:
     sqlconnector(const QString& driver, const QString& hostname,
                  const QString& dbname, const QString& username,
-                 const QString& userpas);
+                 const QString& userpas, const QString& port);
+    void closeDb()
+    {
+        _database.close();
+    }
 
 public slots:
     bool create_database(const QString& dbName);
