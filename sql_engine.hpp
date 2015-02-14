@@ -52,6 +52,8 @@ public slots:
     bool updateTaskStatusForDate(const QString& date, const QString& taskName,
                                  const QString& duration, const QString& percent,
                                  const QString &tblName);
+    bool updateTaskStatusForDate(const QString& date, const QString& taskName,
+                                 const QString& percent, const QString& tblName);
     QString getLastDate();
 
 private:

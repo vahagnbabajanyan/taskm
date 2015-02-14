@@ -177,6 +177,22 @@ bool sqlconnector::updateTaskStatusForDate(const QString& date, const QString& t
     return true;
 }
 
+bool sqlconnector::updateTaskStatusForDate(const QString& date, const QString& taskName,
+                                           const QString& percent, const QString& tblName)
+{
+    QString qupdate = "UPDATE " + tblName +
+            " SET percent = \"" + percent +
+            "\" WHERE date = \"" + date +
+            "\" and task = \"" + taskName + "\";";
+    std::cout << qupdate.toStdString() << std::endl;
+    QSqlQuery query(_database);
+    if (!query.exec(qupdate)) {
+        qDebug() << query.lastError().text();
+        return false;
+    }
+    return true;
+}
+
 QString sqlconnector::getLastDate()
 {
     return QString();

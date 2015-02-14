@@ -34,12 +34,15 @@ myTimers::myTimers(const std::list<task>& tasks,
     , _idle_lcd(0)
     , _calendar(new QPushButton("Calendar"))
     , _plan(new dayPlan)
+    , _sync(new QPushButton("SYNC"))
 {
     QHBoxLayout* mainLayout = new QHBoxLayout;
     setTimer(tasks, mainLayout);
     mainLayout->addWidget(_calendar);
+    mainLayout->addWidget(_sync);
     _calendar->setCheckable(true);
     connect(_calendar, SIGNAL(toggled(bool)), _plan, SLOT(setVisible(bool)));
+    connect(_sync, SIGNAL(clicked()), this, SLOT(syncSqlDatabase()));
     setActive(QTime::currentTime());
     QHBoxLayout* globalLayout = new QHBoxLayout;
     globalLayout->addLayout(mainLayout);
@@ -124,6 +127,50 @@ void myTimers::setButtonsStyleshits(QPushButton *button)
                           );
 }
 
+void myTimers::syncSqlDatabase()
+{
+    std::cout << "updateing" << std::endl;
+    updateAllCollected();
+}
+
+void myTimers::collectInforFromTable(std::list<std::shared_ptr<task>> &info)
+{
+    foreach(const taskGui* t, _tasks) {
+        std::shared_ptr<task> ti = getInfoFromTask(t);
+        info.push_back(ti);
+    }
+}
+
+void myTimers::updateAllCollected()
+{
+    QString whost = "sql3.freesqldatabase.com";
+    QString dbase = "sql366888";
+    QString wuser = "sql366888";
+    QString wpass = "yF5*gA8*";
+    QString port = "3306";
+    sqlconnector sqlc("QMYSQL", whost, dbase, wuser, wpass, port);
+    sqlc.selectDatabase("sql366888");
+    foreach (auto it, _percentsCache) {
+        std::cout << "tname : " << it.first << "  perc: " << it.second << std::endl;
+        sqlc.updateTaskStatusForDate(utilities::getCurrentDate(), it.first.c_str(), QString::number(it.second), "planVersion2");
+    }
+    sqlc.closeDb();
+}
+
+std::shared_ptr<task> myTimers::getInfoFromTask(const taskGui* tk)
+{
+    QStringList infoList; // should have 7 size date, name, stTime, endTime, duration, status, percent
+    infoList.push_back(utilities::getCurrentDate());
+    infoList.push_back(tk->_taskName->text());
+    infoList.push_back(tk->_startTime->text());
+    infoList.push_back(tk->_endTime->toString());
+    infoList.push_back(QString::number(tk->_duration));
+
+    std::shared_ptr<task> tinfo(new task(infoList));
+    return tinfo;
+}
+
+
 void myTimers::setActive(const QTime& current)
 {
 
@@ -135,23 +182,12 @@ void myTimers::setActive(const QTime& current)
         // collectResults()
         _is_active = false;
         _run_timer = false;
-        QString whost = "sql3.freesqldatabase.com";
-        QString dbase = "sql366888";
-        QString wuser = "sql366888";
-        QString wpass = "yF5*gA8*";
-        QString port = "3306";
-        //sqlconnector sqlc("QMYSQL", "localhost", "", "vahagn", "gorilaz");
-        sqlconnector sqlc("QMYSQL", whost, dbase, wuser, wpass, port);
-        sqlc.selectDatabase("sql366888");
+
         QString upDur = QString::number(_currentTimerDuration->minute());
         double prc = (double(_currentTimerDuration->minute()) / double(_activeTask->_duration)) * 100;
-        if (!sqlc.updateTaskStatusForDate(utilities::getCurrentDate(), _activeTask->_taskName->text(),
-                                     QString::number(_currentTimerDuration->minute()),
-                                     QString::number(prc),
-                                     "planVersion1")) {
-            std::cout << "CANNOT UPDATE TABLE" << std::endl;
-        }
-        sqlc.closeDb();
+        std::string taskName = _activeTask->_taskName->text().toStdString();
+        _percentsCache.insert(std::make_pair(taskName, prc));
+
         _activeTask = 0;
     }
 

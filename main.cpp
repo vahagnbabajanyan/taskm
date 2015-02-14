@@ -56,8 +56,6 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-
-
     QString whost = "sql3.freesqldatabase.com";
     QString dbase = "sql366888";
     QString wuser = "sql366888";
@@ -65,16 +63,48 @@ int main(int argc, char *argv[])
     QString port = "3306";
 
     sqlconnector sqlc("QMYSQL", whost, dbase, wuser, wpass, port);
+    //sqlc.selectDatabase("sql366888");
     sqlc.selectDatabase("sql366888");
-    //sqlc.create_table("planVersion1");
+    sqlc.create_table("planVersion2");
 
+    sqlc.create_table("planVersion1");
+    sqlc.insertTaskForDate("2015-02-14", "08:00", "09:30", "puzzles", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "08:30", "09:30", "cormen", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "09:30", "10:30", "templates", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "10:30", "11:30", "design patterns", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "11:30", "12:30", "alexandrescu", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "12:30", "13:00", "lunch", "30", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "13:00", "14:00", "threads", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "14:00", "18:00", "work", "240", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "21:00", "22:00", "stroustrup", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "22:00", "23:00", "satter", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "23:00", "00:00", "dictionary", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "00:00", "00:40", "test knowledge", "40", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "00:40", "01:00", "movie half", "20", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-14", "01:00", "01:30", "reading", "30", "notStarted", "planVersion2");
+
+
+    sqlc.insertTaskForDate("2015-02-15", "08:00", "09:30", "puzzles", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "08:30", "09:30", "cormen", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "09:30", "10:30", "templates", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "10:30", "11:30", "design patterns", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "11:30", "12:30", "alexandrescu", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "12:30", "13:00", "lunch", "30", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "13:00", "14:00", "threads", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "14:00", "18:00", "work", "240", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "21:00", "22:00", "stroustrup", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "22:00", "23:00", "satter", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "23:00", "00:00", "dictionary", "60", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "00:00", "00:40", "test knowledge", "40", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "00:40", "01:00", "movie half", "20", "notStarted", "planVersion2");
+    sqlc.insertTaskForDate("2015-02-15", "01:00", "01:30", "reading", "30", "notStarted", "planVersion2");
 
 
     std::list<task> tasks;
     std::list<std::string> taskNames(getTasks());
     foreach( const std::string& taskName, taskNames) {
         QString cdate = utilities::getCurrentDate();
-        QStringList tlist = sqlc.getTaskForDateByName("planVersion1", utilities::getCurrentDate(), taskName.c_str());
+        QStringList tlist = sqlc.getTaskForDateByName("planVersion2", utilities::getCurrentDate(), taskName.c_str());
         tasks.push_back(task(tlist));
     }
     sqlc.closeDb();
@@ -99,6 +129,14 @@ int main(int argc, char *argv[])
     return a.exec();
 }
 
+/*
+ * if (!sqlc.updateTaskStatusForDate(utilities::getCurrentDate(), _activeTask->_taskName->text(),
+                                     QString::number(_currentTimerDuration->minute()),
+                                     QString::number(prc),
+                                     "planVersion1")) {
+            std::cout << "CANNOT UPDATE TABLE" << std::endl;
+        }
+ * */
 
 
 

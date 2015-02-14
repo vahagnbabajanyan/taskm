@@ -144,16 +144,23 @@ public slots:
         _run_timer = false;
     }
 
+    void syncSqlDatabase();
+
 private:
     void setActive(const QTime& current);
     void setButtonsStyleshits(QPushButton* button);
     void setCurrentTask(taskGui* taskGui, const task& t);
     void createTaskLayout(QHBoxLayout* layout, taskGui* taskg);
+    void collectInforFromTable(std::list<std::shared_ptr<task> > &info);
+    void updateAllCollected();
+    std::shared_ptr<task> getInfoFromTask(const taskGui* task);
+
 
 private:
     QWidget* _mainWidget;
     QWidget* _visibleWidget;
     std::list<taskGui*> _tasks;
+    std::map<std::string, double> _percentsCache;
 
     taskGui* _activeTask;
     bool _is_active;
@@ -169,6 +176,8 @@ private:
 
     QPushButton* _calendar;
     dayPlan* _plan;
-};
+
+    QPushButton* _sync;
+}; // class myTimers
 
 #endif // TIMERS_HPP
